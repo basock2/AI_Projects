@@ -54,7 +54,7 @@ def inference(digit, num_example=1):
                 z = mu + sigma * epsilon
                 out = model.decode(z)
                 out = out.view(-1, 1, 28, 28)
-                save_image(out, f"VAE_generated/generated_{digit}_ex{example}.png")
+                save_image(out, f"VAE/VAE_generated/generated_{digit}_ex{example}.png")
             break
     
 for idx in range(10):
