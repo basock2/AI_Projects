@@ -23,17 +23,24 @@ class VariationalAutoEncoder(nn.Module):
         # an encode function (network) which acts as Q_phi(z|x). uses phi as the parameter.
         h = self.relu(self.img_to_hid(x))
         mu, sigma = self.hid_to_mu(h), self.hid_to_sigma(h)
-
         return mu, sigma
 
     def decode(self, z):
         # decode function which acts as P_theta(x|z). uses theta as the parameter.
-        pass
+        h = self.relu(self.z_to_hid(z))
+        return torch.sigmoid(self.hid_to_img(h))
 
     def forward(self, x):
-        pass
+        mu, sigma = self.encode(x)
+        epsilon = torch.randn_like(sigma) # reparameterization trick!
+        z_reparametrized = mu + sigma * epsilon # element-wise multiplication
+        x_reconstructed = self.decode(z_reparametrized)
+        return x_reconstructed, mu, sigma # mu and sigma is needed for the KLD in the loss function
 
 if __name__ == "__main__":
-    x = torch.randn(1, 784)
-    # vae = VariationalAutoEncoder()
-    # print(vae(x).shape)
+    x = torch.randn(4, 28*28)
+    vae = VariationalAutoEncoder(input_dim=784)
+    x_reconstructed, mu, sigma = vae(x)
+    print(x_reconstructed.shape)
+    print(mu.shape)
+    print(sigma.shape)
