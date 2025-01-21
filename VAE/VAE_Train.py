@@ -15,7 +15,7 @@ NUM_EPOCHS = 3
 BATCH_SIZE = 32
 LR_RATE = 0.0005
 
-# Dataset Loading
+# Dataset Loading!
 dataset = datasets.MNIST(root="dataset/", train=True, transform=transforms.ToTensor(), download=True)
 train_loader = DataLoader(dataset=dataset, batch_size=BATCH_SIZE, shuffle=True)
 model = VariationalAutoEncoder(INPUT_DIM, H_DIM, Z_DIM).to(DEVICE)
